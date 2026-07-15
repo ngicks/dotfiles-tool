@@ -3,6 +3,9 @@
 Tools for [ngicks/dotfiles](https://github.com/ngicks/dotfiles), installed
 through [mise](https://mise.jdx.dev/).
 
+Each tool is versioned independently; releases are tagged `<tool>/v<semver>`
+(e.g. `dotfiles-daemon/v0.0.1`, `podman-static-dist/v0.0.1`).
+
 ## Tools
 
 - `dotfiles-daemon`: moonbit daemon/CLI for dotfiles management
@@ -11,7 +14,7 @@ through [mise](https://mise.jdx.dev/).
 
   ```
   mise plugin install moon https://github.com/ngicks/mise-moon-backend-plugin
-  mise use -g 'moon:https://github.com/ngicks/dotfiles-tool#...@latest'
+  mise use -g 'moon:https://github.com/ngicks/dotfiles-tool#dotfiles-daemon[tag_prefix=dotfiles-daemon/v]@0.0.1'
   ```
 
 - `podman-static-dist`: builds/installs
@@ -19,5 +22,5 @@ through [mise](https://mise.jdx.dev/).
   configuration. Go module; installed via the mise go backend:
 
   ```
-  mise use -g 'go:github.com/ngicks/dotfiles-tool/podman-static-dist/cmd/podman-static-dist@latest'
+  mise use -g 'go:github.com/ngicks/dotfiles-tool/podman-static-dist/cmd/podman-static-dist@0.0.1'
   ```
