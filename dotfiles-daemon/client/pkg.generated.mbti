@@ -1,0 +1,24 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "ngicks/dotfiles-tool/dotfiles-daemon/client"
+
+import {
+  "ngicks/dotfiles-tool/dotfiles-daemon/serverstate",
+}
+
+// Values
+pub async fn devenv_build(Bool) -> @serverstate.Ticket
+
+pub async fn devenv_pull(String, Bool) -> @serverstate.Ticket
+
+pub async fn status(@serverstate.Ticket) -> @serverstate.JobStatus
+
+pub async fn wait(@serverstate.Ticket) -> @serverstate.JobStatus
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

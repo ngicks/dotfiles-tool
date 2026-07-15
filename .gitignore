@@ -1,0 +1,18 @@
+target/
+_build/
+.mooncakes/
+.moonagent/
+packages.json
+.moon-lock
+
+/.agents
+/.claude
+/.codex
+
+# APM dependencies
+apm_modules/
+AGENTS.md
+
+/nvim.log
+
+.kvm.env

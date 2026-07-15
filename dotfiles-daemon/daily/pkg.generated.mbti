@@ -1,0 +1,20 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "ngicks/dotfiles-tool/dotfiles-daemon/daily"
+
+// Values
+pub fn tasks() -> Array[Task]
+
+pub async fn update_daily(String) -> Unit
+
+// Errors
+
+// Types and methods
+pub struct Task {
+  name : String
+  run : async (String) -> Unit
+}
+
+// Type aliases
+
+// Traits
+

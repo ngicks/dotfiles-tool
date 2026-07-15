@@ -1,0 +1,28 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "ngicks/dotfiles-tool/dotfiles-daemon/os_path"
+
+// Values
+pub fn dirname(String) -> String
+
+pub fn join(String, String) -> String
+
+pub fn join_all(Array[String]) -> String
+
+pub fn user_cache_dir() -> String raise
+
+pub fn user_config_dir() -> String raise
+
+pub fn user_data_dir() -> String raise
+
+pub fn user_home_dir() -> String raise
+
+pub fn user_runtime_dir() -> String
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

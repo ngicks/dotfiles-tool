@@ -1,0 +1,15 @@
+import {
+  "moonbitlang/async",
+  "moonbitlang/core/argparse",
+  "ngicks/dotfiles-tool/dotfiles-daemon/daily",
+  "ngicks/dotfiles-tool/dotfiles-daemon/devenv",
+  "ngicks/dotfiles-tool/dotfiles-daemon/server",
+  "ngicks/dotfiles-tool/dotfiles-daemon/client",
+  "ngicks/dotfiles-tool/dotfiles-daemon/serverstate",
+}
+
+supported_targets = "native"
+
+options(
+  "is-main": true,
+)

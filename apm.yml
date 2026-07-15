@@ -1,0 +1,21 @@
+name: .dotfiles
+version: 1.0.0
+description: APM project for .dotfiles
+author: ngicks
+targets:
+dependencies:
+  apm:
+    - github.com/moonbitlang/skills
+    - github.com/ngicks/agents-package/apm-package/cc-workers
+    - github.com/ngicks/agents-package/hooks/golangci-lint-fmt-after-edit
+    - github.com/ngicks/agents-package/hooks/golangci-lint-run-after-edit
+    - github.com/ngicks/agents-package/instructions/base-env.instructions.md
+    - github.com/ngicks/agents-package/instructions/go/go-basics.instructions.md
+    - github.com/ngicks/agents-package/instructions/go/go-design-preference.instructions.md
+    - github.com/ngicks/agents-package/instructions/moonbit/moonbit-basics.instructions.md
+    - github.com/ngicks/agents-package/skills/go-edit-cobra
+    - github.com/ngicks/agents-package/skills/go-check-outdated-patterns
+    - github.com/ngicks/agents-package/skills/go-review-checklist
+    - ngicks/agents-package/skills/ngplan
+  mcp: []
+scripts: {}

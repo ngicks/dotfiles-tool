@@ -1,0 +1,6 @@
+# upstream clone, cloned/checked out inside the build VM (also ignored at repo root)
+/podman-static/
+# Lima <-> host shared work dir (rootfs export, checked-out repo, assembled tree)
+.podman-static-build/
+# locally built tool binary
+/podman-static-dist

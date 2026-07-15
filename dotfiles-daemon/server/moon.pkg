@@ -1,0 +1,14 @@
+import {
+  "moonbitlang/async",
+  "moonbitlang/async/aqueue",
+  "moonbitlang/async/cond_var",
+  "moonbitlang/async/process",
+  "moonbitlang/async/fs",
+  "moonbitlang/core/env",
+  "oboard/mocket",
+  "ngicks/dotfiles-tool/dotfiles-daemon/devenv",
+  "ngicks/dotfiles-tool/dotfiles-daemon/serverstate",
+  "ngicks/dotfiles-tool/dotfiles-daemon/os_path",
+}
+
+supported_targets = "+native"

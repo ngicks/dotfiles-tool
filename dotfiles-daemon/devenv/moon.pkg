@@ -1,0 +1,6 @@
+import {
+  "moonbitlang/async/process",
+  "moonbitlang/core/env",
+}
+
+supported_targets = "+native"
