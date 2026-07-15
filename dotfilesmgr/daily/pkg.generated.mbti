@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "ngicks/dotfiles-tool/dotfiles-daemon/daily"
+package "ngicks/dotfiles-tool/dotfilesmgr/daily"
 
 // Values
 pub fn tasks() -> Array[Task]

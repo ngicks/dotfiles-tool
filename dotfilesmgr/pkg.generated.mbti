@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "ngicks/dotfiles-tool/dotfiles-daemon/internal/cmd/os_path"
+package "ngicks/dotfiles-tool/dotfilesmgr"
 
 // Values
 

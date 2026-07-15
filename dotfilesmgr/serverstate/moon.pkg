@@ -1,7 +1,7 @@
 import {
   "moonbitlang/async/fs",
   "moonbitlang/core/json",
-  "ngicks/dotfiles-tool/dotfiles-daemon/os_path",
+  "ngicks/dotfiles-tool/dotfilesmgr/os_path",
 }
 
 supported_targets = "+native"

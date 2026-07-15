@@ -6,9 +6,9 @@ import {
   "moonbitlang/async/fs",
   "moonbitlang/core/env",
   "oboard/mocket",
-  "ngicks/dotfiles-tool/dotfiles-daemon/devenv",
-  "ngicks/dotfiles-tool/dotfiles-daemon/serverstate",
-  "ngicks/dotfiles-tool/dotfiles-daemon/os_path",
+  "ngicks/dotfiles-tool/dotfilesmgr/devenv",
+  "ngicks/dotfiles-tool/dotfilesmgr/serverstate",
+  "ngicks/dotfiles-tool/dotfilesmgr/os_path",
 }
 
 supported_targets = "+native"

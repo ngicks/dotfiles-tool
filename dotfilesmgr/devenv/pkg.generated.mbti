@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "ngicks/dotfiles-tool/dotfiles-daemon/devenv"
+package "ngicks/dotfiles-tool/dotfilesmgr/devenv"
 
 // Values
 pub async fn build(String, Bool) -> Unit

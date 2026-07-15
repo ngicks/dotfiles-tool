@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "ngicks/dotfiles-tool/dotfiles-daemon/serverstate"
+package "ngicks/dotfiles-tool/dotfilesmgr/serverstate"
 
 import {
   "moonbitlang/core/debug",

@@ -14,7 +14,7 @@ priv struct RepoConfig {
 async fn RepoConfig::resolve() -> RepoConfig raise Error {
   let dir = @os_path.join_all([
     @os_path.user_data_dir(),
-    "dotfiles-server",
+    "dotfilesmgr",
     "dotfiles",
   ])
   let origin = match detect_origin(@devenv.current_dir()) {

@@ -5,11 +5,11 @@ let auto_build_env_var = "DOTFILES_SERVER_AUTO_BUILD"
 ///|
 /// Absolute path of the optional server dotenv file.
 fn dotenv_path() -> String raise Error {
-  @os_path.join_all([@os_path.user_config_dir(), "dotfiles-server", ".env"])
+  @os_path.join_all([@os_path.user_config_dir(), "dotfilesmgr", ".env"])
 }
 
 ///|
-/// Load the optional dotenv file at `~/.config/dotfiles-server/.env` into the
+/// Load the optional dotenv file at `~/.config/dotfilesmgr/.env` into the
 /// process environment.
 ///
 /// No-op when the file is absent. Existing environment variables win, so a value

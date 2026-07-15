@@ -4,17 +4,17 @@ Tools for [ngicks/dotfiles](https://github.com/ngicks/dotfiles), installed
 through [mise](https://mise.jdx.dev/).
 
 Each tool is versioned independently; releases are tagged `<tool>/v<semver>`
-(e.g. `dotfiles-daemon/v0.0.1`, `podman-static-dist/v0.0.1`).
+(e.g. `dotfilesmgr/v0.0.1`, `podman-static-dist/v0.0.1`).
 
 ## Tools
 
-- `dotfiles-daemon`: moonbit daemon/CLI for dotfiles management
+- `dotfilesmgr`: moonbit daemon/CLI for dotfiles management
   (devenv build/pull REST API, daily update). Installed via
   [mise-moon-backend-plugin](https://github.com/ngicks/mise-moon-backend-plugin):
 
   ```
   mise plugin install moon https://github.com/ngicks/mise-moon-backend-plugin
-  mise use -g 'moon:https://github.com/ngicks/dotfiles-tool#dotfiles-daemon[tag_prefix=dotfiles-daemon/v]@0.0.1'
+  mise use -g 'moon:https://github.com/ngicks/dotfiles-tool#dotfilesmgr[tag_prefix=dotfilesmgr/v]@0.0.1'
   ```
 
 - `podman-static-dist`: builds/installs

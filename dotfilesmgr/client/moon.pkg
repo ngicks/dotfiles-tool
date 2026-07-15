@@ -1,7 +1,7 @@
 import {
   "moonbitlang/async/http",
   "moonbitlang/core/json",
-  "ngicks/dotfiles-tool/dotfiles-daemon/serverstate",
+  "ngicks/dotfiles-tool/dotfilesmgr/serverstate",
 }
 
 supported_targets = "+native"

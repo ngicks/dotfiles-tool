@@ -105,7 +105,7 @@ pub fn user_data_dir() -> String raise Error {
 ///
 /// Returns `XDG_RUNTIME_DIR` when present, otherwise `/tmp`. Like the other
 /// `user_*_dir` helpers this is the *base*; callers append their own app
-/// namespace (e.g. `os_path.join(user_runtime_dir(), "dotfiles-server")`).
+/// namespace (e.g. `os_path.join(user_runtime_dir(), "dotfilesmgr")`).
 pub fn user_runtime_dir() -> String {
   @env.get_env_var("XDG_RUNTIME_DIR").unwrap_or("/tmp")
 }

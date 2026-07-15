@@ -13,7 +13,7 @@ fn remote_build_command(subargs : Array[String]) -> String {
   let parts = [
     ". ~/.zshrc",
     "cd ~/.dotfiles",
-    "dotfiles-daemon " + subargs.join(" "),
+    "dotfilesmgr " + subargs.join(" "),
   ]
   parts.join(" && ")
 }

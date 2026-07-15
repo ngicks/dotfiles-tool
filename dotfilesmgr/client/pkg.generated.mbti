@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "ngicks/dotfiles-tool/dotfiles-daemon/client"
+package "ngicks/dotfiles-tool/dotfilesmgr/client"
 
 import {
-  "ngicks/dotfiles-tool/dotfiles-daemon/serverstate",
+  "ngicks/dotfiles-tool/dotfilesmgr/serverstate",
 }
 
 // Values

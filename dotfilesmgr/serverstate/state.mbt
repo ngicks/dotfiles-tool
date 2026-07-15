@@ -28,7 +28,7 @@ pub fn Info::new(pid : Int, url : String) -> Info {
 /// Directory that holds the server state file, namespaced under the runtime base.
 /// `join` tolerates a trailing separator on `XDG_RUNTIME_DIR`.
 pub fn state_dir() -> String {
-  @os_path.join(@os_path.user_runtime_dir(), "dotfiles-server")
+  @os_path.join(@os_path.user_runtime_dir(), "dotfilesmgr")
 }
 
 ///|

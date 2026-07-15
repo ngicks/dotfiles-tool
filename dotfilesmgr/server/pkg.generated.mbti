@@ -1,7 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "ngicks/dotfiles-tool/dotfiles-daemon"
+package "ngicks/dotfiles-tool/dotfilesmgr/server"
 
 // Values
+pub async fn serve(url? : String) -> Unit
 
 // Errors
 

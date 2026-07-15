@@ -107,7 +107,7 @@ async fn Daemon::worker(self : Daemon) -> Unit {
 async fn Daemon::poll_loop(self : Daemon) -> Unit {
   if !self.auto_build {
     println(
-      "auto-build disabled (set \{auto_build_env_var}=1 in ~/.config/dotfiles-server/.env to enable); explicit jobs only",
+      "auto-build disabled (set \{auto_build_env_var}=1 in ~/.config/dotfilesmgr/.env to enable); explicit jobs only",
     )
     return
   }
