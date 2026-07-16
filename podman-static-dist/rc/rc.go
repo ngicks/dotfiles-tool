@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-//go:embed resource
+//go:embed all:resource
 //go:embed tag
 var content embed.FS
 
