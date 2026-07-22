@@ -3,9 +3,20 @@
 pub let repository = "localhost/devenv/devenv"
 
 ///|
+/// repository name for the nix2container Home Manager base images the
+/// Containerfile builds on top of
+pub let base_repository = "localhost/devenv/devenv-home-base"
+
+///|
 /// Fully-qualified `repository:tag` reference for a devenv image.
 pub fn repo_tag(tag : String) -> String {
   repository + ":" + tag
+}
+
+///|
+/// Fully-qualified `repository:tag` reference for a Home Manager base image.
+pub fn base_repo_tag(tag : String) -> String {
+  base_repository + ":" + tag
 }
 
 ///|
@@ -67,17 +78,42 @@ pub async fn is_already_built(ver : String) -> Bool {
 }
 
 ///|
+/// Build the Home Manager base with nix2container and load it into local
+/// container storage as `base_repo_tag(ver)`.
+///
+/// nix2container's `copyTo` skips layers already present in storage, so
+/// reloading an unchanged base is cheap.
+pub async fn load_home_base(
+  repo_dir : String,
+  ver : String,
+) -> Unit raise Error {
+  println("loading " + base_repo_tag(ver))
+  run_checked("nix", [
+    "run",
+    repo_dir + "/nix-craft#devenv-home-base.copyTo",
+    "--",
+    "containers-storage:" + base_repo_tag(ver),
+  ])
+}
+
+///|
 /// Build the devenv image for an explicit version tag from `repo_dir`.
+///
+/// Loads the matching Home Manager base first; the Containerfile derives its
+/// `BASE_IMAGE` from `DEVENV_TAG`.
 pub async fn build_ver(
   repo_dir : String,
   ver : String,
   is_experimental : Bool,
 ) -> Unit raise Error {
+  load_home_base(repo_dir, ver)
   let git_tag_val = if is_experimental { "exp" } else { ver }
   let args = [
     "buildx",
     "build",
     ".",
+    "--build-arg",
+    "DEVENV_TAG=" + ver,
     "--build-arg",
     "GIT_TAG=" + git_tag_val,
     "-f",
