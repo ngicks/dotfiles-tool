@@ -16,3 +16,4 @@ AGENTS.md
 /nvim.log
 
 .kvm.env
+.gpu.env
