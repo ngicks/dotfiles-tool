@@ -8,7 +8,7 @@
 fn lock_dir() -> String raise Error {
   match @env.get_env_var("XDG_RUNTIME_DIR") {
     Some(dir) if dir != "" => @os_path.join(dir, "dotfiles")
-    _ => marker_dir()
+    _ => cache_dir()
   }
 }
 

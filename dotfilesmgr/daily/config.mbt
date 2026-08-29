@@ -1,9 +1,9 @@
 ///|
-/// Directory holding the daily-update markers.
+/// The dotfiles cache directory (daily-update markers, cached git identity).
 ///
 /// Mirrors the login script's `${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles` exactly
 /// (not the platform cache dir), so both sides agree on every OS.
-fn marker_dir() -> String raise Error {
+fn cache_dir() -> String raise Error {
   let cache = @env.get_env_var("XDG_CACHE_HOME").unwrap_or(
     @os_path.join(@os_path.user_home_dir(), ".cache"),
   )
@@ -13,7 +13,7 @@ fn marker_dir() -> String raise Error {
 ///|
 /// Full path of the interval marker file (`.update_daily`).
 fn marker_path() -> String raise Error {
-  @os_path.join(marker_dir(), ".update_daily")
+  @os_path.join(cache_dir(), ".update_daily")
 }
 
 ///|
@@ -36,7 +36,7 @@ async fn marker_mtime() -> (Int64, Int)? raise Error {
 /// Only called once every task has succeeded; on failure the marker is left
 /// untouched so the next login retries.
 async fn touch_marker() -> Unit raise Error {
-  let dir = marker_dir()
+  let dir = cache_dir()
   if !@fs.exists(dir) {
     @fs.mkdir(dir, permission=0o755, recursive=true)
   }
