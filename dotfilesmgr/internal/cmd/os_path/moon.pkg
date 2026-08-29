@@ -2,6 +2,4 @@ import {
   "ngicks/dotfiles-tool/dotfilesmgr/os_path" @os_path_impl,
 }
 
-options(
-  "is-main": true,
-)
+pkgtype(kind: "executable")

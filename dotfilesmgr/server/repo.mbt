@@ -28,7 +28,7 @@ async fn RepoConfig::resolve() -> RepoConfig raise Error {
           )
       }
   }
-  { dir, origin }
+  { dir, origin, }
 }
 
 ///|

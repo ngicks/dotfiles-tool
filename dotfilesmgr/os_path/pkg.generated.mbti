@@ -25,4 +25,3 @@ pub fn user_runtime_dir() -> String
 // Type aliases
 
 // Traits
-

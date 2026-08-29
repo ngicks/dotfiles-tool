@@ -32,7 +32,7 @@ priv struct Job {
 ///|
 /// The job's wire-format ticket: the handle clients hold to query it later.
 fn Job::ticket(self : Job) -> @serverstate.Ticket {
-  { id: self.id }
+  { id: self.id, }
 }
 
 ///|
@@ -44,5 +44,5 @@ fn Job::to_status(self : Job) -> @serverstate.JobStatus {
     Succeeded => ("succeeded", "")
     Failed(m) => ("failed", m)
   }
-  { id: self.id, kind: self.kind, status, message }
+  { id: self.id, kind: self.kind, status, message, }
 }

@@ -21,7 +21,7 @@ pub struct Info {
 
 ///|
 pub fn Info::new(pid : Int, url : String) -> Info {
-  { pid, url }
+  { pid, url, }
 }
 
 ///|

@@ -21,4 +21,3 @@ pub async fn wait(@serverstate.Ticket) -> @serverstate.JobStatus
 // Type aliases
 
 // Traits
-

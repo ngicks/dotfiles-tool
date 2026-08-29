@@ -10,7 +10,7 @@ priv struct SyncPair {
 ///
 /// Extend this list to mirror more host-side GUI app configs.
 let sync_pairs : Array[SyncPair] = [
-  { name: "wezterm", target: ".config/wezterm" },
+  { name: "wezterm", target: ".config/wezterm", },
 ]
 
 ///|
