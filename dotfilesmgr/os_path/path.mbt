@@ -10,7 +10,7 @@ fn get_env_var_or_raise(name : String) -> String raise Error {
 /// Join two path components with the platform separator, like `filepath.Join`.
 /// Tolerates a trailing separator on `base` (no doubled separator).
 pub fn join(base : String, segment : String) -> String {
-  @path.Path(base).join(@path.Path(segment)).to_string()
+  "\{@path.Path(base).join(@path.Path(segment))}"
 }
 
 ///|
@@ -21,13 +21,13 @@ pub fn join_all(parts : Array[String]) -> String {
   for seg in rest {
     acc = acc.join(@path.Path(seg))
   }
-  acc.to_string()
+  "\{acc}"
 }
 
 ///|
 /// The directory portion of `p` (everything before the last separator).
 pub fn dirname(p : String) -> String {
-  @path.Path(p).dirname().to_string()
+  "\{@path.Path(p).dirname()}"
 }
 
 ///|
