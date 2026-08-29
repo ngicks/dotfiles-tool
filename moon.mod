@@ -3,9 +3,9 @@ name = "ngicks/dotfiles-tool"
 version = "0.1.0"
 
 import {
-  "moonbitlang/async@0.20.0",
-  "oboard/mocket@0.7.5",
-  "moonbitlang/x@0.5.0",
+  "moonbitlang/async@0.21.2",
+  "oboard/mocket@0.9.1",
+  "moonbitlang/x@0.5.1",
 }
 
 readme = "README.md"
