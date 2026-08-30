@@ -6,5 +6,6 @@ pub fn tasks() -> Array[Task] {
   [
     Task::{ name: "git pull", run: git_pull, },
     Task::{ name: "sync config", run: sync_config, },
+    Task::{ name: "cache git identity", run: cache_git_identity, },
   ]
 }
