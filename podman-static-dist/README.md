@@ -52,10 +52,15 @@ docker is provisioned *inside* the VM by Lima's `docker` template (rootless).
    checkout — upstream's Makefile builds the `tar-archive` image and assembles
    the whole `build/asset/podman-linux-amd64` tree (rootless docker, no sudo;
    `make` is provisioned into the VM, git is not needed there).
-4. On the host (in Go): copies the embedded resource tree's top-level
-   directories (currently just `etc/` — containers conf + `environment.d`)
-   **un-interpolated** over the matching dirs of the built tree — a pure
-   copy-and-override, no special-case path mapping — stamps the resolved build
+4. On the host (in Go): removes upstream's drop-in directories
+   (`etc/containers/storage.conf.d`, `etc/containers/containers.conf.d`) from
+   the built tree — podman 6 lets drop-ins override the main file, and
+   upstream's `storage.conf.d/00-podman-static.conf` hardcodes
+   `/usr/local/bin/fuse-overlayfs`, which would shadow the dist-relative
+   `mount_program` our `storage.conf` sets — then copies the embedded resource
+   tree's top-level directories (currently just `etc/` — containers conf +
+   `environment.d`) **un-interpolated** over the matching dirs of the built
+   tree — a pure copy-and-override, no special-case path mapping — stamps the resolved build
    tag into the tree root as a `tag` file (so install/extract can recover it and
    make their `--tag` optional), then writes a **seekable** zstd tarball
    (`tar.Writer.AddFS` over a seekable-zstd writer) to the `-o`/`--output`

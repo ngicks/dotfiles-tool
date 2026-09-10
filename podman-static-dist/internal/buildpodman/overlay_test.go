@@ -2,6 +2,9 @@ package buildpodman
 
 import (
 	"context"
+	"errors"
+	"io/fs"
+	"os"
 	"path/filepath"
 	"testing"
 	"testing/fstest"
@@ -13,6 +16,16 @@ func TestOverlay(t *testing.T) {
 	// untouched).
 	writeFile(t, filepath.Join(assetDir, "etc/containers/containers.conf"), "# upstream\n")
 	writeFile(t, filepath.Join(assetDir, "etc/containers/policy.json"), "{}\n")
+	writeFile(
+		t,
+		filepath.Join(assetDir, "etc/containers/storage.conf.d/00-podman-static.conf"),
+		"mount_program = \"/usr/local/bin/fuse-overlayfs\"\n",
+	)
+	writeFile(
+		t,
+		filepath.Join(assetDir, "etc/containers/containers.conf.d/00-x.conf"),
+		"[engine]\n",
+	)
 
 	res := fstest.MapFS{
 		"etc/containers/containers.conf":   {Data: []byte("conmon_path=[\"${HOME}/x\"]\n")},
@@ -50,5 +63,26 @@ func TestOverlay(t *testing.T) {
 		filepath.Join(assetDir, "etc/environment.d/50-podman.conf"),
 	); got != "X=1\n" {
 		t.Errorf("environment.d = %q", got)
+	}
+	// upstream drop-in dirs are pruned so they cannot override our whole-file conf.
+	for _, dir := range prunedDirs {
+		if _, err := os.Stat(filepath.Join(assetDir, dir)); !errors.Is(err, fs.ErrNotExist) {
+			t.Errorf("%s still present (err=%v); want pruned", dir, err)
+		}
+	}
+}
+
+func TestOverlayWithoutDropInDirs(t *testing.T) {
+	assetDir := t.TempDir()
+	writeFile(t, filepath.Join(assetDir, "etc/containers/containers.conf"), "# upstream\n")
+
+	err := Overlay(context.Background(), OverlayParams{
+		AssetDir: assetDir,
+		ResourceFS: fstest.MapFS{
+			"etc/containers/storage.conf": {Data: []byte("driver = \"overlay\"\n")},
+		},
+	})
+	if err != nil {
+		t.Fatalf("Overlay on a tree without drop-in dirs: %v", err)
 	}
 }

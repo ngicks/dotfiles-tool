@@ -14,11 +14,32 @@ type OverlayParams struct {
 	ResourceFS fs.FS  // our resource tree; copied over AssetDir
 }
 
+// prunedDirs are upstream drop-in directories removed from the assembled tree
+// before our resources are overlaid, relative to AssetDir.
+//
+// Podman 6 reads `<conf>.d/` next to the user config, and drop-ins win over the
+// main file. Upstream ships etc/containers/storage.conf.d/00-podman-static.conf
+// with mount_program hardcoded to /usr/local/bin/fuse-overlayfs, which does not
+// exist on a host using this dist and so overrides the dist-relative path our
+// storage.conf sets. Our whole-file configs already carry every setting the
+// drop-ins hold, so dropping the directories is safe. containers.conf.d is
+// pruned for the same reason should upstream start shipping one.
+var prunedDirs = []string{
+	"etc/containers/storage.conf.d",
+	"etc/containers/containers.conf.d",
+}
+
 // Overlay writes our resource tree on top of the tree that upstream's
-// `make singlearch-tar` already assembled: every file in ResourceFS is copied
-// over the matching AssetDir path, creating directories and overwriting files
-// verbatim. Interpolation is deferred to install time.
+// `make singlearch-tar` already assembled: upstream drop-in directories
+// (prunedDirs) are removed, then every file in ResourceFS is copied over the
+// matching AssetDir path, creating directories and overwriting files verbatim.
+// Interpolation is deferred to install time.
 func Overlay(ctx context.Context, p OverlayParams) error {
+	for _, dir := range prunedDirs {
+		if err := os.RemoveAll(filepath.Join(p.AssetDir, filepath.FromSlash(dir))); err != nil {
+			return fmt.Errorf("pruning %s: %w", dir, err)
+		}
+	}
 	return copyTree(ctx, p.ResourceFS, p.AssetDir)
 }
 
