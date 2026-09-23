@@ -22,7 +22,7 @@ const repoUrl = "https://github.com/mgoltzsche/podman-static"
 
 // Option configures Run.
 type Option struct {
-	Tag      string // required: podman-static tag to build (e.g. v5.8.4)
+	Tag      string // required: podman-static tag to build (e.g. v6.1.2)
 	Resource fs.FS  // required: resource tree; its directories are copied over the built tree
 	// OutputPath is the destination .tar.zst; empty defaults to
 	// <standard base>/out/podman-static-<tag>.tar.zst.

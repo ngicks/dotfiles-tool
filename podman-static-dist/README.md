@@ -15,9 +15,9 @@ other host tooling being present.
 ## Commands
 
 ```
-podman-static-dist build   [-o <out.tar.zst>] [--tag v5.8.4] [--recreate] [--yes] [VM flags]
-podman-static-dist extract --tar <out.tar.zst> [--tag v5.8.4]
-podman-static-dist install --tar <out.tar.zst> [--tag v5.8.4]
+podman-static-dist build   [-o <out.tar.zst>] [--tag v6.1.2] [--recreate] [--yes] [VM flags]
+podman-static-dist extract --tar <out.tar.zst> [--tag v6.1.2]
+podman-static-dist install --tar <out.tar.zst> [--tag v6.1.2]
 podman-static-dist link    [--base <dir>] [--tag <tag>] [--skip-systemd]
 podman-static-dist config  [--format <template>]
 podman-static-dist version
