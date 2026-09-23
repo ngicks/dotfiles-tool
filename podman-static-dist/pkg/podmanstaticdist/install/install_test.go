@@ -2,6 +2,8 @@ package install
 
 import (
 	"context"
+	"errors"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"testing"
@@ -77,7 +79,7 @@ func TestExtractResolvesTag(t *testing.T) {
 		if _, err := os.Stat(filepath.Join(base, "flag-tag", "tag")); err != nil {
 			t.Errorf("expected extraction into <base>/flag-tag: %v", err)
 		}
-		if _, err := os.Stat(filepath.Join(base, "v9.9.9")); !os.IsNotExist(err) {
+		if _, err := os.Stat(filepath.Join(base, "v9.9.9")); !errors.Is(err, fs.ErrNotExist) {
 			t.Errorf("archive stamp should be ignored when --tag is set (err %v)", err)
 		}
 	})
@@ -123,7 +125,7 @@ func TestExtractAtomic(t *testing.T) {
 		if _, err := os.Stat(filepath.Join(base, "v1", "tag")); err != nil {
 			t.Errorf("dist dir incomplete after extract: %v", err)
 		}
-		if _, err := os.Stat(filepath.Join(base, "v1.tmp")); !os.IsNotExist(err) {
+		if _, err := os.Stat(filepath.Join(base, "v1.tmp")); !errors.Is(err, fs.ErrNotExist) {
 			t.Errorf("tmp dir survived a successful extract (err %v)", err)
 		}
 	})
@@ -134,10 +136,10 @@ func TestExtractAtomic(t *testing.T) {
 		if err := Extract(context.Background(), o); err == nil {
 			t.Fatal("expected an error extracting a corrupt archive")
 		}
-		if _, err := os.Stat(filepath.Join(base, "v1")); !os.IsNotExist(err) {
+		if _, err := os.Stat(filepath.Join(base, "v1")); !errors.Is(err, fs.ErrNotExist) {
 			t.Errorf("dist dir survived a failed extract (err %v)", err)
 		}
-		if _, err := os.Stat(filepath.Join(base, "v1.tmp")); !os.IsNotExist(err) {
+		if _, err := os.Stat(filepath.Join(base, "v1.tmp")); !errors.Is(err, fs.ErrNotExist) {
 			t.Errorf("tmp dir survived a failed extract (err %v)", err)
 		}
 	})
@@ -157,10 +159,10 @@ func TestExtractAtomic(t *testing.T) {
 		if _, err := os.Stat(filepath.Join(base, "v1", "tag")); err != nil {
 			t.Errorf("dist dir incomplete after re-extract: %v", err)
 		}
-		if _, err := os.Stat(stray); !os.IsNotExist(err) {
+		if _, err := os.Stat(stray); !errors.Is(err, fs.ErrNotExist) {
 			t.Errorf("stray file survived re-extract; replace was not clean (err %v)", err)
 		}
-		if _, err := os.Stat(filepath.Join(base, "v1.tmp")); !os.IsNotExist(err) {
+		if _, err := os.Stat(filepath.Join(base, "v1.tmp")); !errors.Is(err, fs.ErrNotExist) {
 			t.Errorf("tmp dir survived re-extract (err %v)", err)
 		}
 	})
