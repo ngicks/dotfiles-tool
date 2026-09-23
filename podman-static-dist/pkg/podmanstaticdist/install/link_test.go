@@ -42,6 +42,11 @@ func linkFixture(t *testing.T) (base string, env Env) {
 	)
 	writeTreeFile(t, filepath.Join(tagDir, "etc/containers/storage.conf"), "[storage.options]\n")
 	writeTreeFile(t, filepath.Join(tagDir, "etc/containers/registries.conf"), "unqualified = []\n")
+	writeTreeFile(
+		t,
+		filepath.Join(tagDir, "usr/local/share/bash-completion/completions/podman"),
+		"complete -F __start_podman podman\n",
+	)
 
 	if err := os.Symlink("v1", filepath.Join(base, "current")); err != nil {
 		t.Fatal(err)
@@ -80,6 +85,12 @@ func assertWired(t *testing.T, base string, env Env) {
 	envLink := filepath.Join(env.ConfigHome, "environment.d/50-podman.conf")
 	if got, err := os.Readlink(envLink); err != nil || got != want {
 		t.Errorf("environment.d link = %q (err %v), want %s", got, err, want)
+	}
+
+	wantComp := filepath.Join(current, "usr/local/share/bash-completion/completions/podman")
+	compLink := filepath.Join(env.DataHome, "bash-completion/completions/podman")
+	if got, err := os.Readlink(compLink); err != nil || got != wantComp {
+		t.Errorf("bash-completion link = %q (err %v), want %s", got, err, wantComp)
 	}
 }
 
@@ -297,6 +308,11 @@ func TestWiringRulesTable(t *testing.T) {
 		filepath.Join(current, "usr/local/lib/systemd/user/podman.socket"),
 		"[Socket]\n",
 	)
+	writeTreeFile(
+		t,
+		filepath.Join(current, "usr/local/share/bash-completion/completions/podman"),
+		"complete -F __start_podman podman\n",
+	)
 
 	env := Env{
 		Home:       home,
@@ -326,6 +342,10 @@ func TestWiringRulesTable(t *testing.T) {
 	assertRow("systemd", linkRule{
 		filepath.Join(env.ConfigHome, "systemd/user/podman.socket"),
 		filepath.Join(current, "usr/local/lib/systemd/user/podman.socket"),
+	})
+	assertRow("bash-completion", linkRule{
+		filepath.Join(env.DataHome, "bash-completion/completions/podman"),
+		filepath.Join(current, "usr/local/share/bash-completion/completions/podman"),
 	})
 	for _, r := range rules {
 		if r[0] == filepath.Join(home, ".local/containers") {

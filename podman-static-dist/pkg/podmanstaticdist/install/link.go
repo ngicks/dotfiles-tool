@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"syscall"
 )
 
 type LinkOption struct {
@@ -111,6 +110,25 @@ func wiringRules(p wiringParams) ([]linkRule, error) {
 		links = append(links, linkRule{
 			filepath.Join(p.env.ConfigHome, "environment.d", name),
 			filepath.Join(p.current, "etc/environment.d", name),
+		})
+	}
+
+	for name, err := range listDirent(
+		filepath.Join(p.current, "usr/local/share/bash-completion/completions"),
+		func(e fs.DirEntry) bool { return e.Type().IsRegular() },
+	) {
+		if err != nil {
+			return nil, err
+		}
+		// ~/.local/share/bash-completion/completions/* ->
+		// ~/.local/share/podman-dist/current/usr/local/share/bash-completion/completions/*
+		//
+		// bash-completion lazy-loads per-command files from this XDG user dir, so a
+		// link is all bash needs. zsh has no such user dir; its fpath entry points
+		// straight at the dist tree from etc/containers/path.sh instead.
+		links = append(links, linkRule{
+			filepath.Join(p.env.DataHome, "bash-completion/completions", name),
+			filepath.Join(p.current, "usr/local/share/bash-completion/completions", name),
 		})
 	}
 
@@ -225,74 +243,4 @@ func daemonReload(ctx context.Context) {
 	if err := cmd.Run(); err != nil {
 		fmt.Fprintf(os.Stderr, "warning: systemctl --user daemon-reload failed: %v\n", err)
 	}
-}
-
-func updateSymlink(target, linkPath string) error {
-	if fi, err := os.Lstat(linkPath); err == nil {
-		if fi.Mode()&os.ModeSymlink == 0 {
-			return fmt.Errorf("refusing to replace non-symlink: %s", linkPath)
-		}
-		if cur, err := os.Readlink(linkPath); err == nil && cur == target {
-			return nil
-		}
-		if err := os.Remove(linkPath); err != nil {
-			return err
-		}
-	} else if !errors.Is(err, fs.ErrNotExist) {
-		return err
-	}
-	if err := os.MkdirAll(filepath.Dir(linkPath), 0o755); err != nil {
-		return err
-	}
-	return os.Symlink(target, linkPath)
-}
-
-func forceSymlink(target, linkPath string) error {
-	if fi, err := os.Lstat(linkPath); err == nil && fi.Mode()&os.ModeSymlink != 0 {
-		if cur, err := os.Readlink(linkPath); err == nil && cur == target {
-			return nil
-		}
-	}
-	if err := os.MkdirAll(filepath.Dir(linkPath), 0o755); err != nil {
-		return err
-	}
-	if err := os.Remove(linkPath); err != nil && !errors.Is(err, fs.ErrNotExist) {
-		return err
-	}
-	return os.Symlink(target, linkPath)
-}
-
-func needElevate(dir string) bool {
-	if os.Geteuid() == 0 {
-		return false
-	}
-	fi, err := os.Stat(dir)
-	if err != nil {
-		return true
-	}
-	st, ok := fi.Sys().(*syscall.Stat_t)
-	if !ok {
-		return true
-	}
-	mode := fi.Mode().Perm()
-	switch {
-	case int(st.Uid) == os.Geteuid():
-		return mode&0o200 == 0
-	case int(st.Gid) == os.Getegid():
-		return mode&0o020 == 0
-	default:
-		return mode&0o002 == 0
-	}
-}
-
-func elevate(ctx context.Context, name string, args ...string) error {
-	argv := append([]string{name}, args...)
-	if os.Geteuid() != 0 {
-		argv = append([]string{"sudo"}, argv...)
-	}
-	cmd := exec.CommandContext(ctx, argv[0], argv[1:]...)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
 }

@@ -131,8 +131,11 @@ tooling required:
 - creates the symlinks `.../podman-dist/current` and `~/.config/containers`,
   the per-unit links under `~/.config/systemd/user` (targets under
   `<base>/current/usr/local/lib/systemd/user` — binaries have no home-side
-  link), and the per-file `environment.d` links under
-  `~/.config/environment.d`;
+  link), the per-file `environment.d` links under `~/.config/environment.d`,
+  and the per-command bash completion links under
+  `${XDG_DATA_HOME}/bash-completion/completions` (bash-completion lazy-loads
+  them from there; zsh gets its `_podman` via the `fpath` entry `path.sh`
+  adds, pointing at `<base>/current/usr/local/share/zsh/site-functions`);
 - registers the quadlet user generator in a system generator dir (directly when
   root, else via `sudo` with stdio forwarded; skipped with instructions when
   neither is available) and runs `systemctl --user daemon-reload`.
@@ -152,6 +155,8 @@ differs from the host that produced the tree (e.g. inside a container).
 
 - symlinks `~/.config/containers` → `<base>/current/etc/containers`;
 - links the `environment.d` fragments per-file;
+- links the bash completion files per-file into
+  `${XDG_DATA_HOME}/bash-completion/completions`;
 - performs the systemd wiring (unit links targeting
   `<base>/current/usr/local/lib/systemd/user`, quadlet generator,
   daemon-reload) unless `--skip-systemd` is given or `systemctl` is not on
@@ -159,7 +164,9 @@ differs from the host that produced the tree (e.g. inside a container).
 
 Binaries are addressed directly under `<base>/current/usr/local` (PATH comes
 from the dist's `environment.d` fragment / `path.sh`); there is no home-side
-binary link. Re-running relinks — it is idempotent.
+binary link. `path.sh` also prepends the dist's `zsh/site-functions` dir to
+`fpath` when sourced from zsh, so `_podman` autoloads without a link.
+Re-running relinks — it is idempotent.
 
 Flags:
 
@@ -219,6 +226,7 @@ rc/                            resource embedding package:
   rc.go                         //go:embed resource + tag -> FS/Tag (mirrors the built tree)
   resource/                     artifact tree baked into the binary:
     etc/containers/               conf copied over the built etc/containers, symlinked as ~/.config/containers
+                                  (path.sh: PATH entries for the dist binaries + zsh fpath entry for its completions)
                                   (__additional_podman-in-podman/: containers.conf/storage.conf/path.sh variants
                                   for podman inside the devenv container — concrete /root paths, host image store
                                   appended — extracted as-is; the devenv runner shadow-mounts them over the
